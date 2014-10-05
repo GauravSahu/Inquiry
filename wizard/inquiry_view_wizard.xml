@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+	<data>
+		
+		 <record id="view_allegee_reply_wizard" model="ir.ui.view">
+            <field name="name">allegee.reply.form</field>
+            <field name="model">allegee.reply</field>
+            <field name="arch" type="xml">
+                <form string="Allegee Reply">
+                    <group>
+                        <field name="subject" />
+                        <field name="reply_comment" />
+                    </group>
+                   <footer>
+                        <button  string="Submit Data" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+		<record id="action_allegee_reply_wizard" model="ir.actions.act_window">
+            <field name="name">Allegee Reply</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">allegee.reply</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_allegee_reply_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+         <record id="view_rohead_comment_wizard" model="ir.ui.view">
+            <field name="name">allegee.reply.form</field>
+            <field name="model">rohead.comment</field>
+            <field name="arch" type="xml">
+                <form string="Ro Head Comment">
+                    <group>
+                       	<field name="allegation"/>
+	                   	<field name="explanation"/>
+	                    <field name="rohead_comments"/>
+                    </group>
+                   <footer>
+                        <button  name="action_next" string="Next" type="object" class="oe_highlight"/>
+                         <button  name="action_clear" string="Clear" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+		<record id="action_rohead_comment_wizard" model="ir.actions.act_window">
+            <field name="name">Ro Head Comment</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">rohead.comment</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_rohead_comment_wizard"/>
+            <field name="target">new</field>
+        </record>
+
+         <record id="view_print_wizard" model="ir.ui.view">
+            <field name="name">print.documents.form</field>
+            <field name="model">print.documents</field>
+            <field name="arch" type="xml">
+                <form string="Print Documents">
+                   
+                    	<button string="Copy Of Explanation" class="oe_highlight" />
+                    	<button string="Tabular Statement" class="oe_highlight" />
+                    	<button name="print_quotation" type="object" string="Biodata" class="oe_highlight" />
+                    	<button string="Present status Of The Account" class="oe_highlight" />
+                   
+                   <footer>
+                        <button string="Cancel" class="oe_highlight" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+		<record id="action_print_wizard" model="ir.actions.act_window">
+            <field name="name">Print Documents</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">print.documents</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_print_wizard"/>
+            <field name="target">new</field>
+        </record>
+      
+
+
+	</data>
+</openerp>

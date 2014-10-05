@@ -1,0 +1,94 @@
+import time
+
+from openerp.osv import fields, osv
+from openerp.tools.translate import _
+
+class initial_report(osv.osv):
+	_name = "report.initial"
+	_description = "Initial Report Filed"
+	_columns = {
+		'title': fields.char('Title', size=128, required=True),
+		'description': fields.text('description'),
+		'against_person': fields.many2one('hr.employee', 'Accused Person'),
+		'accuser': fields.many2one('hr.employee', 'Accuser Person'),
+		'accuser_type': fields.selection([('branch','Branch'),('ro','RO'),('audit','Audit'),('vigilance','Vigilance'),('cbi', 'CBI')], 'Report From', readonly=True, select=True),
+		'report_id': fields.char('Report Number', size=128, required=True),
+		'showcause': fields.many2one('showcause', 'Show Cause Notice'),
+	}
+initial_report()
+
+class show_cause(osv.osv):
+	_name = "showcause"
+	_description = "Show Cause Memorandum"
+	_columns = {
+		'title': fields.char('Title', size=128, required=True),
+		'description': fields.text('Description'),
+		'against_person': fields.many2one('hr.employee', 'Accused'),
+		'issued_by': fields.many2one('hr.employee', 'Issued By'),
+		'report': fields.many2one('report.initial','Report'),
+		'issued_on': fields.datetime('Issued on', size=64),
+		'acusee_reply': fields.many2one('acusee.reply','Acusee Reply'),
+		'rohead_comments': fields.many2one('rohead.comments','RO Head Comments'),
+		'charges': fields.one2many('showcause.charge','showcause'),
+		'vigilance_status': fields.selection([('vigilance','Vigilance'), ('nonvigilance','Non Vigilance')],'Vigilance Case', readonly=True),
+	}
+show_cause()
+
+class charges_showcause(osv.osv):
+	_name = "showcause.charge"
+	_description = "The charges associated with Showcause"
+	_columns = {
+		'allegation_id': fields.integer('Allegation Id'),
+		'allegation': fields.char('Allegation', size=512, required=True),
+		'explanation': fields.char('Explanations', size=512, required=True),
+		'rohead_comments': fields.char('RO Head Comments', size=512, required=True),
+		'showcause': fields.many2one('showcause', 'Showcause'),
+	}
+charges_showcause()
+
+class accusee_reply(osv.osv):
+	_name = "acusee.reply"
+	_description = "The replies of the Acusee"
+	_columns = {
+		'title': fields.char('Title', size=128),
+		'description': fields.html('Description'),
+		'showcause': fields.many2one('showcause', readonly=True),
+		'time': fields.datetime('time', size=64),
+	}
+accusee_reply()
+
+class rohead_comments(osv.osv):
+	_name = "rohead.comments"
+	_description = "Comments of RO Head"
+	_columns = {
+		'title': fields.char('title', size=128),
+		'comments': fields.text('Comments of Regional Head'),
+		'showcause': fields.many2one('showcause', readonly=True),
+		'time': fields.datetime('time', size=64),
+	}
+rohead_comments()
+
+class iac_recommendation(osv.osv):
+	_name = "iac.recommendation"
+	_description = "Details about the IAC Comitte"
+	_columns = {
+		'showcause_memo': fields.many2one('showcause', 'Showcause'),
+		'gm1': fields.many2one('hr.employee', 'GM 1'),
+		'gm2': fields.many2one('hr.employee', 'GM 2'),
+		'gm3': fields.many2one('hr.employee', 'GM 3'),
+		'meeting_date': fields.datetime('Meeting Date'),
+		'meeting_detail': fields.html('Meeting Summary'),
+		'vigilance_status': fields.selection([('vigilance','Vigilance'), ('nonvigilance','Non Vigilance')],'Vigilance Case'),
+	}
+iac_recommendation()
+
+class cvo_recommendation(osv.osv):
+	_name = "cvo.recommendation"
+	_description = "CVO Recommendations"
+	_columns = {
+		'cvo': fields.many2one('hr.employee','CVO'),
+		'cvo_feedback': fields.html('CVO Feedback'),
+		'vigilance_status': fields.selection([('vigilance','Vigilance'), ('nonvigilance','Non Vigilance')],'Vigilance Case'),
+		'cvc_needed': fields.boolean('CVC Needed'),
+	}
+cvo_recommendation()
