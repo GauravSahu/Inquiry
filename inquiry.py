@@ -178,27 +178,74 @@ cso_recommendation()
 class ia_inquiry(osv.osv):
 	_name = "ia.inquiry"
 	_columns = {
-		'witness_name' : fields.many2one('hr.employee',"Witness Name"),
-		'vigilance_status': fields.selection([('vigilance','Vigilance'), ('nonvigilance','Non Vigilance')],'Vigilance Case'),
-		'cso_advice' : fields.text("CSO Advice"),
+		'ia_comments' : fields.text("IA Comments"),
+		'upload_data' : fields.binary('Upload Data'),
 	}
 ia_inquiry()
 
 class charge_sheet(osv.osv):
 	_name = "charge.sheet"
-	_inherit = ['cso.recommendation']
+	_inherit = ['cso.recommendation','ia.inquiry']
+
+	def charge_step1(self, cr, uid, ids, context=None):
+		self.write(cr, uid, ids, {'state' : 'step2'}, context=context)
+		return True
+
+	def charge_step2(self, cr, uid, ids, context=None):
+		self.write(cr, uid, ids, {'state' : 'step3'}, context=context)
+		return True
+
+	def charge_step3(self, cr, uid, ids, context=None):
+		self.write(cr, uid, ids, {'state' : 'step4'}, context=context)
+		return True
+		
+	def charge_step(self, cr, uid, context=None):
+		self.write(cr, uid, [14], {'state' : 'step4'}, context=context)
+		return True
+
+	def charge_step4(self, cr, uid, ids, context=None):
+		self.write(cr, uid, ids, {'state' : 'step5'}, context=context)
+		return True
+
+	def charge_step5(self, cr, uid, ids, context=None):
+		self.write(cr, uid, ids, {'state' : 'step6'}, context=context)
+		return True
+
+	def charge_step6(self, cr, uid, ids, context=None):
+		self.write(cr, uid, ids, {'state' : 'step7'}, context=context)
+		return True
+	
+	def charge_step7(self, cr, uid, ids, context=None):
+		self.write(cr, uid, ids, {'state' : 'step8'}, context=context)
+		return True
+
+	def charge_step8(self, cr, uid, ids, context=None):
+		self.write(cr, uid, ids, {'state' : 'step9'}, context=context)
+		return True
+
 	_columns = {
 		"showcause_id" : fields.many2one('showcause',"Showcause"),
 		"witness_name" : fields.many2one('hr.employee',"Witness Name"),
 		"first_advice" : fields.text('First Stage Advice',readonly=True),
 		'vigilance_status': fields.char('Vigilance Status',readonly=True),
+		'inquiry' : fields.boolean('Inquiry Status'),
+		'start_date' : fields.datetime('Date'),
+		'da_comments' : fields.text("Da Comments"),
+		'cso_comments' : fields.text("CSO Feedback"),
+		'da_penality_text' : fields.text('DA Penalty Text'),
+		'concure_ia' : fields.boolean('Concure with IA'),
+		'cvo_feedback' : fields.text("CVO Feedback"),
+		'final_penality_order' : fields.html('Final Penalty Order'),
 		'state' : fields.selection([
-			('step1', 'Stage1'),
-			('step2', 'Stage2'),
-			('step3', 'Stage3'),
-			('step4', 'Stage4'),
-			('step5', 'Stage5'),
-			('step6', 'Stage6')],"State"),
+			('step1', 'Draft'),
+			('step2', 'Waiting For Vigilance'),
+			('step3', 'Charge Sheet Filed'),
+			('step4', 'Inquiry'),
+			('step5', 'DA Finding '),
+			('step6', 'CSO Submission'),
+			('step7', 'DA Penalty'),
+			('step8', 'CVO Advice'),
+			('step9','Penalty Order')],"State"),
 	}
 	_defaults = {
 		'state': 'step1'

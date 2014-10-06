@@ -136,6 +136,15 @@
 				<form string="Charge Sheet" version="7.0">
 					<header>
 						<button string="Download Documents" icon="gtk-print" />
+						<button name="charge_step1" type="object" string="Submit" states="step1" icon="gtk-execute" />
+						<button name="charge_step2" type="object" string="Accepted Vigilance" states="step2" icon="gtk-execute" />
+						<button name="charge_step3" type="object" string="Submit Statement of Defence" states="step3" icon="gtk-execute" />
+						<button name="charge_step4" type="object" string="Submit Inquiry" states="step4" icon="gtk-execute" />
+						<button name="charge_step5" type="object" string="Submit DA Approval" states="step5" icon="gtk-execute" />
+						<button name="charge_step6" type="object" string="Submit CSO Feedback" states="step6" icon="gtk-execute" />
+						<button name="charge_step7" type="object" string="Submit DA Penality" states="step7" icon="gtk-execute" />
+						<button name="charge_step8" type="object" string="Submit CVO Feedback" states="step8" icon="gtk-execute" />
+						<button name="print" type="object" string="Print" states="step5" icon="gtk-print" />
 						<field name="state" widget="statusbar" />
 					</header>
 					<sheet>
@@ -150,15 +159,58 @@
 							<field name="witness_name" />
 							<field name="first_advice" />
 							<field name='vigilance_status'/>
+							<field name="start_date"/>
+							<field name="inquiry"/>
 						</group>
 						<br/>
 						<br/>
 						<notebook>
-							<page string="CSO Statement" states="step2">
+							<page string="CSO Statement" states="step3,step4,step5,step6,step7,step8,step9">
 							<separator string="CSO Statement"/>
 								<group colspan="4" cols="4">
 									<field name="officer_name" />
 									<field name="defence_statement" />
+								</group>
+							</page>
+							<page string="Inquiry" states="step4,step5,step6,step7,step8,step9">
+							<separator string="Inquiry"/>
+								<group colspan="4" cols="4">
+									<field name="ia_comments" />
+									<field name="upload_data" />
+								</group>
+							</page>
+							<page string="DA Approval" states="step5,step6,step7,step8,step9">
+							<separator string="DA Approval"/>
+								<group colspan="4" cols="4">
+									<field name="da_comments" />
+									<field name="concure_ia" />
+								</group>
+							</page>
+							<page string="CSO Submission" states="step6,step7,step8,step9">
+							<separator string="DA Approval"/>
+								<group colspan="4" cols="4">
+									<field name="cso_comments" />
+								</group>
+							</page>
+							<page string="DA Penality" states="step7,step8,step9">
+							<separator string="DA Approval"/>
+								<group colspan="4" cols="4">
+									<field name="da_penality_text" />
+								</group>
+							</page>
+
+							<page string="CVO Advice" states="step8,step9">
+							<separator string="DA Approval"/>
+								<group colspan="4" cols="4">
+									<field name="cvo_feedback" />
+								</group>
+							</page>
+
+							<page string="Final Penality" states="step9">
+							<separator string="DA Approval"/>
+								<group colspan="4" cols="4">
+									<field name="da_comments" />
+									<field name="concure_ia" />
 								</group>
 							</page>
 						</notebook>
@@ -184,6 +236,17 @@
 	        <field name="view_type">form</field>
 	        <field name="view_mode">tree,form</field>
    		</record>
+
+   		<record id="ir_my_step_action" model="ir.cron">
+            <field name="name">My Step</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model">charge.sheet</field>
+            <field name="function">charge_step</field>
+            <field name="args">()</field>
+        </record>
 
 		<menuitem name="Charge Sheet" id="charge_sheet" parent="inquiry"/>
     	<menuitem name="Charge Sheet" id="charge_sheet_menu" parent="charge_sheet" action="charge_sheet_tree_form"/>
