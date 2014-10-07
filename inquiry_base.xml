@@ -16,7 +16,7 @@
 						<button name="showcause_step6" string="Submit CVC Advice" states="step6"  type="object" icon="gtk-execute"/>
 						<button string="Print" states="step6"  type="object" icon="gtk-execute"/>
 						<button name="showcause_step7" string="Submit DA Advice" states="step7"  type="object" icon="gtk-execute"/>
-						<button name="showcause_step8" string="Create Charge Sheet" states="step8"  type="object" icon="gtk-execute"/>
+						<button name="%(charge_sheet_tree_form)d" string="Create Charge Sheet" states="step8"  type="action" icon="gtk-execute"/>
 						<button name="%(action_print_wizard)d" string="Print" states="step4"  type="action" icon="gtk-execute"/>
 						<field name="state" widget="statusbar" />
 					</header>
@@ -187,30 +187,29 @@
 								</group>
 							</page>
 							<page string="CSO Submission" states="step6,step7,step8,step9">
-							<separator string="DA Approval"/>
+							<separator string="CSO Submission"/>
 								<group colspan="4" cols="4">
 									<field name="cso_comments" />
 								</group>
 							</page>
 							<page string="DA Penality" states="step7,step8,step9">
-							<separator string="DA Approval"/>
+							<separator string="DA Penality"/>
 								<group colspan="4" cols="4">
 									<field name="da_penality_text" />
 								</group>
 							</page>
 
 							<page string="CVO Advice" states="step8,step9">
-							<separator string="DA Approval"/>
+							<separator string="CVO Advice"/>
 								<group colspan="4" cols="4">
 									<field name="cvo_feedback" />
 								</group>
 							</page>
 
 							<page string="Final Penality" states="step9">
-							<separator string="DA Approval"/>
+							<separator string="Final Penality"/>
 								<group colspan="4" cols="4">
-									<field name="da_comments" />
-									<field name="concure_ia" />
+									<field name="final_penality_order" />
 								</group>
 							</page>
 						</notebook>

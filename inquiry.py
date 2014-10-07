@@ -200,6 +200,9 @@ class charge_sheet(osv.osv):
 		return True
 		
 	def charge_step(self, cr, uid, context=None):
+		sheet_id = 14
+		charge_sheet_obj = self.pool.get('charge.sheet').browse(cr, uid, charge_sheet_id)
+		create_date = charge_sheet_obj.start_date
 		self.write(cr, uid, [14], {'state' : 'step4'}, context=context)
 		return True
 
