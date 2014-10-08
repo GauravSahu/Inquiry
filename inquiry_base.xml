@@ -16,8 +16,8 @@
 						<button name="showcause_step6" string="Submit CVC Advice" states="step6"  type="object" icon="gtk-execute"/>
 						<button string="Print" states="step6"  type="object" icon="gtk-execute"/>
 						<button name="showcause_step7" string="Submit DA Advice" states="step7"  type="object" icon="gtk-execute"/>
-						<button name="%(charge_sheet_tree_form)d" string="Create Charge Sheet" states="step8"  type="action" icon="gtk-execute"/>
-						<button name="%(action_print_wizard)d" string="Print" states="step4"  type="action" icon="gtk-execute"/>
+						<button name="$(charge_sheet_tree_form)d" string="Create Charge Sheet" states="step9"  type="action" icon="gtk-execute"/>
+						<button name="$(action_print_wizard)d" string="Print" states="step4"  type="action" icon="gtk-execute"/>
 						<field name="state" widget="statusbar" />
 					</header>
 					<sheet>
@@ -33,7 +33,7 @@
 							<field name="against_person" class="oe_inline"/>
 							<field name="issued_by" class="oe_inline"/>
 							<field name="issued_on" class="oe_inline"/>
-							<field name="vigilance_status" class="oe_inline"/>
+							<field name="vigilance_status" class="oe_inline" readonly="1" />
 						</group>
 
 						<group colspan="2" col="2">
@@ -41,38 +41,48 @@
 						</group>
 						<notebook>
 							
-							<page string="Charges" states="step1,step2,step3,step4,step5,step6,step7,step8" >
+							<page string="Charges" states="step1,step2,step3,step4,step5,step6,step7,step8,step9" >
 								<separator string="Allegation" states="step1"/>
 								<separator string="Explanation" states="step2"/>
 								<separator string="RO Head Comments" states="step3"/>
 								<field name="rohead_comments_line" colspan="4" string="RO Head Comments" nolabel="1">
                              	<form string="RO Head Comments" version="7.0">
-                  				 <group>
+                  					<group>
 	                                    <field name="allegation" class="oe_inline"/>
-	                                    <field name="explanation" class="oe_inline"/>
-	                               		<field name="rohead_comments" class="oe_inline"  />
-	                              		
-	                              </group>
+	                                    <field name="explanation" class="oe_inline"   />
+	                               		<field name="rohead_comments" class="oe_inline" />
+	                              	</group>
    		                        </form>
                         		<tree string="RO Head Comments">
-                               			<field name="allegation"/>
-	                                    <field name="explanation"/>
-	                                    <field name="rohead_comments"/>
+                               		<field name="allegation"/>
+	                                <field name="explanation"/>
+	                                <field name="rohead_comments"/>
                         		</tree>
                     			</field>
 							</page>
-							<page string="IAC Recommendation" states="step4,step5,step6,step7,step8" >
+							<page string="IAC Recommendation" states="step4,step5,step6,step7,step8,step9" >
 								<separator string="IAC Recommendation"/>
+								<field name="rohead_comments_line" colspan="4" string="RO Head Comments" nolabel="1">
+                             	<form string="RO Head Comments" version="7.0">
+                  					<group>
+	                                    <field name="allegation" class="oe_inline"/>
+	                                    <field name="explanation" class="oe_inline"   />
+	                               		<field name="rohead_comments" class="oe_inline" />
+	                              	</group>
+   		                        </form>
+                        		<tree string="RO Head Comments">
+                               		<field name="allegation"/>
+	                                <field name="explanation"/>
+	                                <field name="rohead_comments"/>
+                        		</tree>
+                    			</field>
 								<group colspan="4" cols="4">
-									<field name='gm1'/>
-									<field name='gm2'/>
-									<field name='gm3'/>
 									<field name='meeting_date'/>
 								    <field name='meeting_detail'/>
-								    <field name='vigilance_status'/>
+								    <field name='vigilance_status' on_change="onchange_iac_vigilance_status(vigilance_status)"/>
 								</group>
 							</page>
-							<page string="CVO Recommendations" states="step5,step6,step7,step8" >
+							<page string="CVO Recommendations" states="step5,step6,step7,step8,step9" >
 								<separator string="CVO Recommendations"/>
 								<group colspan="4" cols="4">
 								<group >
@@ -83,7 +93,7 @@
 								</group>
 							</group>
 							</page>
-							<page string="CVC Advice" states="step6,step7,step8">
+							<page string="CVC Advice" states="step6,step7,step8,step9">
 								<separator string="CVC Advice"/>
 								<group colspan="4" cols="4">
 									<field name='views_da'/>
@@ -91,7 +101,7 @@
 									<field name='vigilance_status'/>
 								</group>
 							</page>
-							<page string="Disciplinary Authority" states="step7,step8">
+							<page string="Disciplinary Authority" states="step7,step8,step9">
 								<separator string="Disciplinary Authority"/>
 								<group colspan="4" cols="4">
 									<field name='authority_name'/>
@@ -145,6 +155,7 @@
 						<button name="charge_step7" type="object" string="Submit DA Penality" states="step7" icon="gtk-execute" />
 						<button name="charge_step8" type="object" string="Submit CVO Feedback" states="step8" icon="gtk-execute" />
 						<button name="print" type="object" string="Print" states="step5" icon="gtk-print" />
+						<button name="print" type="object" string="Print" states="step6" icon="gtk-print" />
 						<field name="state" widget="statusbar" />
 					</header>
 					<sheet>
@@ -155,6 +166,7 @@
 							<br />
 						</div>
 						<group colspan="4" cols="4">
+							<field name="title" />
 							<field name="showcause_id" on_change="onchange_showcause_id(showcause_id)" />
 							<field name="witness_name" />
 							<field name="first_advice" />
@@ -235,6 +247,8 @@
 	        <field name="view_type">form</field>
 	        <field name="view_mode">tree,form</field>
    		</record>
+
+   		
 
    		<record id="ir_my_step_action" model="ir.cron">
             <field name="name">My Step</field>
